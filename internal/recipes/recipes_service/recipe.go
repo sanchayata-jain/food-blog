@@ -25,8 +25,8 @@ func (r *RecipeService) CreateRecipe(ctx context.Context, recipe *models.Recipe)
 	}
 
 	query := `
-		INSERT INTO recipes (id, title, description, ingredients, instructions, user_id)
-		VALUES ($1, $2, $3, $4, $5, $6)
+		INSERT INTO recipes (id, title, description, ingredients, instructions)
+		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id
 	`
 

@@ -16,9 +16,8 @@ import (
 )
 
 const (
-	host string = "0.0.0.0"
-	port string = "80"
-	addr string = "0.0.0.0:80"
+	port string = "8080"
+	addr string = "0.0.0.0:8080"
 )
 
 type Server interface {
@@ -68,7 +67,7 @@ func New() Server {
 }
 
 func (s *server) ListenandServe() error {
-	log.Print("Server is running on port 80")
+	log.Print("Server is running on port 8080")
 	return http.ListenAndServe(addr, &ochttp.Handler{
 		Handler: s.serv.Handler,
 	})

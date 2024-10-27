@@ -13,7 +13,7 @@ type Database struct {
 }
 
 func NewDatabase() (*Database, error) {
-	dsn := "host=localhost user=user password=password dbname=database port=5432 sslmode=disable TimeZone=UTC"
+	dsn := "host=localhost user=postgres dbname=food_blog port=5432 sslmode=disable TimeZone=UTC"
 	// return sql.Open("postgres", dsn)
 
 	// Open a database connection
@@ -42,7 +42,7 @@ func CreateExtenstion(database *Database) error {
 
 func CreateRecipesTable(database *Database) error {
 	_, err := database.DB.Exec(`CREATE TABLE IF NOT EXISTS recipies(
-		id uuid DEFAULT VARCHAR NOT NULL,
+		id uuid NOT NULL,
 		title VARCHAR NOT NULL,
 		description VARCHAR NOT NULL, 
 		ingredients VARCHAR NOT NULL,
