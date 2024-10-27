@@ -41,8 +41,8 @@ func CreateExtenstion(database *Database) error {
 }
 
 func CreateRecipesTable(database *Database) error {
-	_, err := database.DB.Exec(`CREATE TABLE IF NOT EXISTS recipies(
-		id uuid NOT NULL,
+	_, err := database.DB.Exec(`CREATE TABLE IF NOT EXISTS recipes(
+		id VARCHAR UNIQUE,
 		title VARCHAR NOT NULL,
 		description VARCHAR NOT NULL, 
 		ingredients VARCHAR NOT NULL,

@@ -9,7 +9,7 @@ import (
 	"go.opencensus.io/plugin/ochttp"
 
 	"github.com/sanchayata-jain/food-blog/internal/recipes/handler"
-	recipe_service "github.com/sanchayata-jain/food-blog/internal/recipes/recipes_service"
+	recipeservice "github.com/sanchayata-jain/food-blog/internal/recipes/recipes_service"
 	"github.com/sanchayata-jain/food-blog/internal/storage"
 
 	_ "github.com/lib/pq"
@@ -46,10 +46,10 @@ func New() Server {
 
 	r := chi.NewRouter()
 	// Initialize the services
-	recipeService := recipe_service.NewRecipeService(db)
+	recipeService := recipeservice.NewRecipeService(db)
 	recipeHandler := handler.NewHandler(recipeService)
+	// r.MethodFunc(http.MethodGet, "/get-recipe", recipeHandler.GetRecipe)
 	r.MethodFunc(http.MethodPost, "/create-recipe", recipeHandler.CreateRecipe)
-
 	// gatewayRepo := repo.NewRepository(db)
 	// gatewayService := service.NewService(gatewayRepo)
 	// gatewayCtrl := handler.NewController(gatewayService)

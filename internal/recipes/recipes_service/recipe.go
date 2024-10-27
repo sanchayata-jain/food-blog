@@ -1,4 +1,4 @@
-package recipe_service
+package recipesservice
 
 import (
 	"context"
@@ -20,16 +20,14 @@ func NewRecipeService(database *storage.Database) *RecipeService {
 }
 
 func (r *RecipeService) CreateRecipe(ctx context.Context, recipe *models.Recipe) error {
-	if recipe.ID == "" || recipe.Title == "" || recipe.Description == "" || recipe.Ingredients == "" || recipe.Instructions == "" {
-		return errors.New("missing required fields")
+	if recipe.ID == "" || recipe.Description == "" || recipe.Ingredients == "" || recipe.Instructions == "" || recipe.Title == "" {
+		return errors.New("empty fields")
 	}
-
 	query := `
 		INSERT INTO recipes (id, title, description, ingredients, instructions)
 		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id
 	`
-
 	_, err := r.Database.DB.ExecContext(ctx, query, recipe.ID, recipe.Title, recipe.Description, recipe.Ingredients, recipe.Instructions)
 	if err != nil {
 		return err
