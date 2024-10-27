@@ -5,17 +5,23 @@ import (
 	"errors"
 
 	"github.com/sanchayata-jain/food-blog/internal/recipes/models"
-	"github.com/sanchayata-jain/food-blog/internal/storage"
+	"github.com/sanchayata-jain/food-blog/internal/recipes/repository"
 )
+
+type Service interface {
+	CreateRecipe(ctx context.Context, recipe *models.Recipe) error
+	// Add other methods as needed
+}
 
 // RecipeService struct implements the RecipeService interface.
 type RecipeService struct {
-	Database *storage.Database
+	// Database *storage.Database
+	Repository *repository.RecipeRepo
 }
 
-func NewRecipeService(database *storage.Database) *RecipeService {
+func NewRecipeService(repo *repository.RecipeRepo) *RecipeService {
 	return &RecipeService{
-		Database: database,
+		Repository: repo,
 	}
 }
 
@@ -23,12 +29,8 @@ func (r *RecipeService) CreateRecipe(ctx context.Context, recipe *models.Recipe)
 	if recipe.ID == "" || recipe.Description == "" || recipe.Ingredients == "" || recipe.Instructions == "" || recipe.Title == "" {
 		return errors.New("empty fields")
 	}
-	query := `
-		INSERT INTO recipes (id, title, description, ingredients, instructions)
-		VALUES ($1, $2, $3, $4, $5)
-		RETURNING id
-	`
-	_, err := r.Database.DB.ExecContext(ctx, query, recipe.ID, recipe.Title, recipe.Description, recipe.Ingredients, recipe.Instructions)
+
+	err := r.Repository.InsertRecipe(ctx, recipe)
 	if err != nil {
 		return err
 	}
