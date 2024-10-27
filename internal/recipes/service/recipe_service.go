@@ -10,12 +10,10 @@ import (
 
 type Service interface {
 	CreateRecipe(ctx context.Context, recipe *models.Recipe) error
-	// Add other methods as needed
 }
 
 // RecipeService struct implements the RecipeService interface.
 type RecipeService struct {
-	// Database *storage.Database
 	Repository *repository.RecipeRepo
 }
 
