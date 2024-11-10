@@ -11,13 +11,13 @@ import (
 
 type RecipeService interface {
 	CreateRecipe(ctx context.Context, recipe *models.Recipe) error
+	GetRecipes(ctx context.Context) ([]models.Recipe, error)
 }
 
 type Handler struct {
 	Service RecipeService
 }
 
-// NewHandler creates a new recipe handler.
 func NewHandler(service RecipeService) *Handler {
 	return &Handler{Service: service}
 }
@@ -35,4 +35,18 @@ func (h *Handler) CreateRecipe(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
+}
+
+func (h *Handler) GetRecipes(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+	recipes, err := h.Service.GetRecipes(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	recipesBytes, err := json.Marshal(recipes)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	w.Write(recipesBytes)
 }

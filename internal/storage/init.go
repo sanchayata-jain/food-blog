@@ -14,7 +14,6 @@ type Database struct {
 
 func NewDatabase() (*Database, error) {
 	dsn := "host=localhost user=postgres dbname=food_blog port=5432 sslmode=disable TimeZone=UTC"
-	// return sql.Open("postgres", dsn)
 
 	// Open a database connection
 	db, err := sql.Open("postgres", dsn)
