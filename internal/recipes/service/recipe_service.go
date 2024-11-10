@@ -10,12 +10,10 @@ import (
 
 type Service interface {
 	CreateRecipe(ctx context.Context, recipe *models.Recipe) error
-	// Add other methods as needed
+	GetRecipes(ctx context.Context) ([]models.Recipe, error)
 }
 
-// RecipeService struct implements the RecipeService interface.
 type RecipeService struct {
-	// Database *storage.Database
 	Repository *repository.RecipeRepo
 }
 
@@ -36,4 +34,23 @@ func (r *RecipeService) CreateRecipe(ctx context.Context, recipe *models.Recipe)
 	}
 
 	return nil
+}
+
+func (r *RecipeService) GetRecipes(ctx context.Context) ([]models.Recipe, error) {
+	rows, err := r.Repository.GetRecipes(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var recipes []models.Recipe
+	for rows.Next() {
+		var recipe models.Recipe
+		err := rows.Scan(&recipe.Title, &recipe.Description, &recipe.Ingredients, &recipe.Instructions)
+		if err != nil {
+			return nil, err
+		}
+		recipes = append(recipes, recipe)
+	}
+
+	return recipes, nil
 }

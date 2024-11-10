@@ -28,3 +28,15 @@ func (r *RecipeRepo) InsertRecipe(ctx context.Context, recipe *models.Recipe) er
 
 	return nil
 }
+
+func (r *RecipeRepo) GetRecipes(ctx context.Context) (*sql.Rows, error) {
+	query := `
+		SELECT title, description, ingredients, instructions FROM recipes
+	`
+	recipe, err := r.Database.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	return recipe, nil
+}

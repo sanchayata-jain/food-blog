@@ -46,18 +46,11 @@ func New() Server {
 	}
 
 	r := chi.NewRouter()
-	// Initialize the services
 	recipeRepo := repository.NewRecipeRepo(db.DB)
 	recipeService := recipeservice.NewRecipeService(recipeRepo)
 	recipeHandler := handler.NewHandler(recipeService)
-	// r.MethodFunc(http.MethodGet, "/get-recipe", recipeHandler.GetRecipe)
+	r.MethodFunc(http.MethodGet, "/get-all-recipes", recipeHandler.GetRecipes)
 	r.MethodFunc(http.MethodPost, "/create-recipe", recipeHandler.CreateRecipe)
-	// gatewayRepo := repo.NewRepository(db)
-	// gatewayService := service.NewService(gatewayRepo)
-	// gatewayCtrl := handler.NewController(gatewayService)
-
-	// r.MethodFunc(http.MethodPost, "/create-payment-request", gatewayCtrl.CreatePaymentRequest())
-	// r.MethodFunc(http.MethodGet, "/get-payment-details/{id}", gatewayCtrl.GetPaymentDetails())
 
 	return &server{
 		serv: &http.Server{
